@@ -1,0 +1,47 @@
+<form [formGroup]="transportForm" (ngSubmit)="updateTransport(transportForm.value)">
+
+
+  <div class="form-group">
+    <label class="p-mb-3">Préférence Transport</label>
+    <select class="form-control" formControlName="type" [(ngModel)]="defaultTransport">
+      <option *ngFor="let t of transportsTypes; let i = index;" value="{{t| uppercase}}" [selected]="i==1?true:null">{{t}}</option>
+    </select>
+  </div>
+  <div class="form-group">
+    <label for="nom">Numero</label>
+    <input type="number" pInputText id="nom" formControlName="num" required autofocus/>
+    <!--<small class="p-invalid" *ngIf="submitted && !usager.nom">Nom is required.</small>-->
+  </div>
+  <div class="form-group">
+    <label for="vitesse">Vitesse</label>
+    <input type="number" pInputText id="vitesse" formControlName="vitesse" required autofocus/>
+    <!--<small class="p-invalid" *ngIf="submitted && !usager.nom">Nom is required.</small>-->
+  </div>
+  <div class="form-group">
+    <label for="capacity">Capacité</label>
+    <input type="number" pInputText id="capacity" formControlName="capacity" required autofocus/>
+    <!--<small class="p-invalid" *ngIf="submitted && !usager.nom">Nom is required.</small>-->
+  </div>
+  <div class="form-group">
+    <label for="pdc">Permis de conduite</label>
+    <input type="text" pInputText id="pdc" formControlName="pdC" required autofocus/>
+    <!--<small class="p-invalid" *ngIf="submitted && !usager.nom">Nom is required.</small>-->
+  </div>
+  <div class="form-group">
+    <label for="prix">Prix</label>
+    <input type="number" pInputText id="prix" formControlName="prix" required autofocus/>
+    <!--<small class="p-invalid" *ngIf="submitted && !usager.nom">Nom is required.</small>-->
+  </div>
+  <div class="form-group">
+    <label for="mt">Matricule</label>
+    <input type="text" pInputText id="mt" formControlName="matricule" required autofocus/>
+    <!--<small class="p-invalid" *ngIf="submitted && !usager.nom">Nom is required.</small>-->
+  </div>
+
+  <button pButton pRipple label="Ajouter" icon="pi pi-check" class="p-button-text" type="submit" [disabled]="!transportForm.valid"></button>
+
+</form>
+
+
+
+

@@ -1,0 +1,151 @@
+<p-toast></p-toast>
+<p-toast position="top-center" key="tc"></p-toast>
+
+<div class="m-4">
+  <p-panel header="Informations Transports">
+    <div class="panel panel-warning">
+      <div class="panel-heading"></div>
+      <div class="panel-body">
+        <p-toolbar styleClass="p-mb-4">
+          <ng-template pTemplate="left">
+            <button pButton pRipple label="New" icon="pi pi-plus" class="p-button-success p-mr-2"
+                    (click)="openNew()"></button>
+            <button pButton pRipple icon="pi pi-trash" class="p-button-danger ml-3" (click)="deleteSelectedUsagers()"
+                    [disabled]="!selectedTransports || !selectedTransports.length"></button>
+
+          </ng-template>
+
+        </p-toolbar>
+
+        <p-table #dt1 [value]="transports"
+                 [globalFilterFields]="['nom','an','h','pt','fct']" [paginator]="true" [rows]="4"
+                 [showCurrentPageReport]="true"
+                 currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+                 [rowHover]="true"
+                 [(selection)]="selectedTransports"
+        >
+
+          <ng-template pTemplate="caption">
+            <div class="p-d-flex">
+          <span class="p-input-icon-right p-ml-auto">
+            <i class="pi pi-search"></i>
+            <input pInputText type="text" (input)="dt1.filterGlobal($event.target.value, 'contains')"
+                   placeholder="Search keyword"/>
+          </span>
+            </div>
+          </ng-template>
+
+          <ng-template pTemplate="header" sortMode="multiple">
+            <tr>
+              <th style="width: 3rem">
+                <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+              </th>
+              <th pSortableColumn="type">Type
+                <p-sortIcon field="type"></p-sortIcon>
+              </th>
+              <th pSortableColumn="num">Numéro
+                <p-sortIcon field="num"></p-sortIcon>
+              </th>
+              <th pSortableColumn="vitesse">Vitesse
+                <p-sortIcon field="vitesse"></p-sortIcon>
+              </th>
+              <th pSortableColumn="capacity">Capcité
+                <p-sortIcon field="capacity"></p-sortIcon>
+              </th>
+              <th pSortableColumn="PdC">Permis de Conduite
+                <p-sortIcon field="PdC"></p-sortIcon>
+              </th>
+              <th pSortableColumn="prix">Prix
+                <p-sortIcon field="prix"></p-sortIcon>
+              </th>
+              <th pSortableColumn="mt">Matricule
+                <p-sortIcon field="mt"></p-sortIcon>
+              </th>
+              <th>Edit/Delete</th>
+            </tr>
+
+            <tr>
+              <th style="width: 3rem">
+              </th>
+              <th>
+                <p-columnFilter type="text" field="type"></p-columnFilter>
+              </th>
+              <th>
+                <p-columnFilter type="text" field="num"></p-columnFilter>
+              </th>
+              <th>
+                <p-columnFilter type="text" field="vitesse"></p-columnFilter>
+              </th>
+              <th>
+                <p-columnFilter type="text" field="capacity"></p-columnFilter>
+              </th>
+              <th>
+                <p-columnFilter type="text" field="PdC"></p-columnFilter>
+              </th>
+              <th>
+                <p-columnFilter type="text" field="prix"></p-columnFilter>
+              </th>
+              <th>
+                <p-columnFilter type="text" field="matricule"></p-columnFilter>
+              </th>
+              <th></th>
+
+
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-transport>
+            <tr style="cursor: pointer;">
+              <td>
+                <p-tableCheckbox [value]="transport"></p-tableCheckbox>
+              </td>
+              <td>{{transport.type}}</td>
+              <td>{{transport.num}}</td>
+              <td>{{transport.vitesse}}</td>
+              <td>{{transport.capacity}}</td>
+              <td>{{transport.PdC}}</td>
+              <td>{{transport.prix}}</td>
+              <td>{{transport.matricule}}</td>
+              <td>
+                <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success p-mr-2"
+                        (click)="editTransport(transport)"></button>
+
+
+                <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning ml-2"
+                        (click)="delete(transport)"></button>
+              </td>
+            </tr>
+          </ng-template>
+
+
+          <ng-template pTemplate="emptymessage">
+            <tr>
+              <td colspan="7">No transports found</td>
+            </tr>
+          </ng-template>
+
+          <p-paginator [rows]="10" [totalRecords]="transports.length" [rowsPerPageOptions]="[10,20,30]"></p-paginator>
+        </p-table>
+      </div>
+    </div>
+  </p-panel>
+</div>
+
+<p-dialog (onHide)="hideDialog()" [(visible)]="transportDialog" [style]="{width: '450px'}" header="Ajouter Transport"
+          [modal]="true"
+          styleClass="p-fluid">
+  <app-transports-add (add)="addTransport($event)"></app-transports-add>
+  <button pButton pRipple label="Cancel" icon="pi pi-times" class="p-button-text" (click)="hideDialog()"></button>
+
+</p-dialog>
+
+<p-dialog (onHide)="hideDialog()" *ngIf="transport && submitted" [(visible)]="transportUpdateDialog"
+          [style]="{width: '450px'}" header="Usager Details" [modal]="true"
+          styleClass="p-fluid">
+  <app-transports-update [transport]="transport" (update)="updateTransport($event)"></app-transports-update>
+
+  <button pButton pRipple label="Cancel" icon="pi pi-times" class="p-button-text" (click)="hideDialog()"></button>
+
+</p-dialog>
+
+<p-confirmDialog [style]="{width: '450px'}"></p-confirmDialog>
+

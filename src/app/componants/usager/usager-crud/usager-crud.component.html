@@ -1,0 +1,136 @@
+<p-toast></p-toast>
+<p-toast position="top-center" key="tc"></p-toast>
+
+<div class="m-4">
+  <p-panel header="Informations Transports">
+    <div class="panel panel-warning">
+      <div class="panel-heading"></div>
+      <div class="panel-body">
+        <p-toolbar styleClass="p-mb-4">
+          <ng-template pTemplate="left">
+            <button pButton pRipple label="New" icon="pi pi-plus" class="p-button-success p-mr-2"
+                    (click)="openNew()"></button>
+            <button pButton pRipple icon="pi pi-trash" class="p-button-danger ml-3" (click)="deleteSelectedUsagers()"
+                    [disabled]="!selectedUsagers || !selectedUsagers.length"></button>
+
+          </ng-template>
+
+        </p-toolbar>
+
+        <p-table #dt1 [value]="usagers"
+                 [globalFilterFields]="['nom','an','h','pt','fct']" [paginator]="true" [rows]="4"
+                 [showCurrentPageReport]="true"
+                 currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+                 [rowHover]="true"
+                 [(selection)]="selectedUsagers"
+        >
+
+          <ng-template pTemplate="caption">
+            <div class="p-d-flex">
+          <span class="p-input-icon-right p-ml-auto">
+            <i class="pi pi-search"></i>
+            <input pInputText type="text" (input)="dt1.filterGlobal($event.target.value, 'contains')"
+                   placeholder="Search keyword"/>
+          </span>
+            </div>
+          </ng-template>
+
+          <ng-template pTemplate="header" sortMode="multiple">
+            <tr>
+              <th style="width: 3rem">
+                <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+              </th>
+              <th pSortableColumn="nom">Nom
+                <p-sortIcon field="nom"></p-sortIcon>
+              </th>
+              <th pSortableColumn="an">Année de Naissance
+                <p-sortIcon field="an"></p-sortIcon>
+              </th>
+              <th pSortableColumn="h">Handicape
+                <p-sortIcon field="h"></p-sortIcon>
+              </th>
+              <th pSortableColumn="pt">Préférence Transport
+                <p-sortIcon field="pt"></p-sortIcon>
+              </th>
+              <th pSortableColumn="fct">Fonction
+                <p-sortIcon field="fct"></p-sortIcon>
+              </th>
+              <th>Edit/Delete</th>
+            </tr>
+
+            <tr>
+              <th style="width: 3rem">
+              </th>
+              <th>
+                <p-columnFilter type="text" field="nom"></p-columnFilter>
+              </th>
+              <th>
+                <p-columnFilter type="text" field="an"></p-columnFilter>
+              </th>
+              <th>
+                <p-columnFilter type="text" field="h"></p-columnFilter>
+              </th>
+              <th>
+                <p-columnFilter type="text" field="pt"></p-columnFilter>
+              </th>
+              <th>
+                <p-columnFilter type="text" field="fct"></p-columnFilter>
+              </th>
+              <th></th>
+
+
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-usager>
+            <tr style="cursor: pointer;">
+              <td>
+                <p-tableCheckbox [value]="usager"></p-tableCheckbox>
+              </td>
+              <td>{{usager.nom}}</td>
+              <td>{{usager.an | date:'dd/MM/yyyy'}}</td>
+              <td>{{usager.h == false ? 'Non' : 'Oui'}}</td>
+              <td>{{usager.pt}}</td>
+              <td>{{usager.fct}}</td>
+              <td>
+                <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success p-mr-2"
+                        (click)="editUsager(usager)"></button>
+
+
+                <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning ml-2"
+                        (click)="deleteUsager(usager)"></button>
+              </td>
+            </tr>
+          </ng-template>
+
+
+          <ng-template pTemplate="emptymessage">
+            <tr>
+              <td colspan="7">No usagers found.</td>
+            </tr>
+          </ng-template>
+
+          <p-paginator [rows]="10" [totalRecords]="usagers.length" [rowsPerPageOptions]="[10,20,30]"></p-paginator>
+        </p-table>
+      </div>
+    </div>
+  </p-panel>
+</div>
+
+<p-dialog (onHide)="hideDialog()" [(visible)]="usagerDialog" [style]="{width: '450px'}" header="Usager Details"
+          [modal]="true"
+          styleClass="p-fluid">
+  <app-usager-add (add)="addUsager($event)"></app-usager-add>
+  <button pButton pRipple label="Cancel" icon="pi pi-times" class="p-button-text" (click)="hideDialog()"></button>
+
+</p-dialog>
+
+<p-dialog (onHide)="hideDialog()" *ngIf="usager && submitted" [(visible)]="usagerUpdateDialog"
+          [style]="{width: '450px'}" header="Usager Details" [modal]="true"
+          styleClass="p-fluid">
+  <app-usager-update [usager]="usager" (update)="updateUsager($event)"></app-usager-update>
+
+  <button pButton pRipple label="Cancel" icon="pi pi-times" class="p-button-text" (click)="hideDialog()"></button>
+
+</p-dialog>
+
+<p-confirmDialog [style]="{width: '450px'}"></p-confirmDialog>

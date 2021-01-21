@@ -1,0 +1,92 @@
+<div class="m-1">
+  <p-panel header="Informations Transports">
+    <p-table #dt1 [value]="transports" styleClass="p-datatable-customers p-datatable-gridlines"
+             [globalFilterFields]="['type','num','v','cp','Pdc','prix']" [paginator]="true" [rows]="4"
+             [showCurrentPageReport]="true"
+             currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+             [rowHover]="true">
+
+      <ng-template pTemplate="caption">
+        <div class="p-d-flex">
+          <span class="p-input-icon-right p-ml-auto">
+            <i class="pi pi-search"></i>
+            <input pInputText type="text" (input)="dt1.filterGlobal($event.target.value, 'contains')"
+                   placeholder="Search keyword"/>
+          </span>
+        </div>
+      </ng-template>
+
+      <ng-template pTemplate="header" sortMode="multiple">
+        <tr>
+          <th pSortableColumn="type">Type
+            <p-sortIcon field="type"></p-sortIcon>
+          </th>
+          <th pSortableColumn="num">Numero
+            <p-sortIcon field="num"></p-sortIcon>
+          </th>
+          <th pSortableColumn="v">Vitesse
+            <p-sortIcon field="vitesse"></p-sortIcon>
+          </th>
+          <th pSortableColumn="cp">Capacité
+            <p-sortIcon field="capacity"></p-sortIcon>
+          </th>
+          <th pSortableColumn="Pdc">Permis de conduite
+            <p-sortIcon field="Pdc"></p-sortIcon>
+          </th>
+          <th pSortableColumn="prix">Prix
+            <p-sortIcon field="prix"></p-sortIcon>
+          </th>
+          <th pSortableColumn="mt">Matricule
+            <p-sortIcon field="mt"></p-sortIcon>
+          </th>
+        </tr>
+
+        <tr>
+          <th>
+            <p-columnFilter type="text" field="type"></p-columnFilter>
+          </th>
+          <th>
+            <p-columnFilter type="text" field="num"></p-columnFilter>
+          </th>
+          <th>
+            <p-columnFilter type="text" field="vitesse"></p-columnFilter>
+          </th>
+          <th>
+            <p-columnFilter type="text" field="capacity"></p-columnFilter>
+          </th>
+          <th>
+            <p-columnFilter type="text" field="Pdc"></p-columnFilter>
+          </th>
+          <th>
+            <prixolumnFilter type="text" field="prix"></prixolumnFilter>
+          </th>
+          <th>
+            <prixolumnFilter type="text" field="mt"></prixolumnFilter>
+          </th>
+
+
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-transport>
+        <tr>
+          <td>{{transport.type}}</td>
+          <td>{{transport.num}}</td>
+          <td>{{transport.vitesse}}</td>
+          <td>{{transport.capacity}}</td>
+          <td>{{transport.pdC}}</td>
+          <td>{{transport.prix}}</td>
+          <td>{{transport.matricule}}</td>
+        </tr>
+      </ng-template>
+
+
+      <ng-template pTemplate="emptymessage">
+        <tr>
+          <td colspan="7">Non transports trouvé</td>
+        </tr>
+      </ng-template>
+
+      <p-paginator [rows]="10" [totalRecords]="transports.length" [rowsPerPageOptions]="[10,20,30]"></p-paginator>
+    </p-table>
+  </p-panel>
+</div>
